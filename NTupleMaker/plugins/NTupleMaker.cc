@@ -1170,10 +1170,10 @@ void NTupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	{
 	  for(unsigned i = 0 ; i < Vertex->size(); i++)
 	    {
-	      if(true){
-	      //if((*Vertex)[i].isValid() && !(*Vertex)[i].isFake()){
-		  if(true){
-		  //if((*Vertex)[i].ndof() >= 4 && (*Vertex)[i].z() > -24 && (*Vertex)[i].z() < 24 && (*Vertex)[i].position().Rho() < 2.){
+	      //if(true){
+	      if((*Vertex)[i].isValid() && !(*Vertex)[i].isFake()){
+		  //if(true){
+		  if((*Vertex)[i].ndof() >= 4 && (*Vertex)[i].z() > -24 && (*Vertex)[i].z() < 24 && (*Vertex)[i].position().Rho() < 2.){
 		    if(primvertex_count == 0)
 		      {
 			primvertex_x = (*Vertex)[i].x();
