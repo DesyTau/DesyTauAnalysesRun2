@@ -1170,9 +1170,10 @@ void NTupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	{
 	  for(unsigned i = 0 ; i < Vertex->size(); i++)
 	    {
-	      if((*Vertex)[i].isValid() && !(*Vertex)[i].isFake())
-		{
-		  if((*Vertex)[i].ndof() >= 4 && (*Vertex)[i].z() > -24 && (*Vertex)[i].z() < 24 && (*Vertex)[i].position().Rho() < 2.){
+	      if(true){
+	      //if((*Vertex)[i].isValid() && !(*Vertex)[i].isFake()){
+		  if(true){
+		  //if((*Vertex)[i].ndof() >= 4 && (*Vertex)[i].z() > -24 && (*Vertex)[i].z() < 24 && (*Vertex)[i].position().Rho() < 2.){
 		    if(primvertex_count == 0)
 		      {
 			primvertex_x = (*Vertex)[i].x();
@@ -1422,17 +1423,6 @@ void NTupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	    }
 	}
     } // cgen
-  if(doDebug)  cout<<"add muons"<< endl; 
-  if (crecmuon) 
-    {
-      int numberOfMuons = int(AddMuons(iEvent));
-    } // crecmuon
-  
-  if(doDebug)  cout<<"add electrons"<< endl; 
-  if (crecelectron) 
-    {
-      int numberOfElectrons = int(AddElectrons(iEvent,iSetup));
-    } // crecelectron
   
   if(doDebug)  cout<<"add trigger info"<< endl; 
   if (ctrigger) 
