@@ -182,6 +182,10 @@ public :
    Int_t           electron_superclusterindex[100];   //[electron_count]
    UChar_t         electron_info[100];   //[electron_count]
    Float_t         electron_mva_id_nontrigPhys14[100];   //[electron_count]
+   Float_t         electron_mva_value_nontrig_Spring15_v1[100]; //[electron_count]
+   Int_t           electron_mva_category_nontrig_Spring15_v1[100]; //[electron_count]
+   Int_t           electron_mva_mediumId_nontrig_Spring15_v1[100]; //[electron_count]
+   Int_t           electron_mva_tightId_nontrig_Spring15_v1[100]; //[electron_count]
    Bool_t          electron_pass_conversion[100];   //[electron_count]
    UInt_t          tau_count;
    Float_t         tau_e[100];   //[tau_count]
@@ -498,6 +502,10 @@ public :
    TBranch        *b_electron_superclusterindex;   //!
    TBranch        *b_electron_info;   //!
    TBranch        *b_electron_mva_id_nontrigPhys14;   //!
+   TBranch        *b_electron_mva_value_nontrig_Spring15_v1;   //!
+   TBranch        *b_electron_mva_category_nontrig_Spring15_v1;   //!
+   TBranch        *b_electron_mva_mediumId_nontrig_Spring15_v1;   //!
+   TBranch        *b_electron_mva_tightId_nontrig_Spring15_v1;   //!
    TBranch        *b_electron_pass_conversion;   //!
    TBranch        *b_tau_count;   //!
    TBranch        *b_tau_e;   //!
@@ -961,6 +969,10 @@ void AC1B::Init(TTree *tree, bool isData)
    fChain->SetBranchAddress("electron_superclusterindex", electron_superclusterindex, &b_electron_superclusterindex);
    fChain->SetBranchAddress("electron_info", electron_info, &b_electron_info);
    fChain->SetBranchAddress("electron_mva_id_nontrigPhys14", electron_mva_id_nontrigPhys14, &b_electron_mva_id_nontrigPhys14);
+   fChain->SetBranchAddress("electron_mva_value_nontrig_Spring15_v1", electron_mva_value_nontrig_Spring15_v1, &b_electron_mva_value_nontrig_Spring15_v1);
+   fChain->SetBranchAddress("electron_mva_category_nontrig_Spring15_v1", electron_mva_category_nontrig_Spring15_v1, &b_electron_mva_category_nontrig_Spring15_v1);
+   fChain->SetBranchAddress("electron_mva_mediumId_nontrig_Spring15_v1", electron_mva_mediumId_nontrig_Spring15_v1, &b_electron_mva_mediumId_nontrig_Spring15_v1);
+   fChain->SetBranchAddress("electron_mva_tightId_nontrig_Spring15_v1", electron_mva_tightId_nontrig_Spring15_v1, &b_electron_mva_tightId_nontrig_Spring15_v1);
    fChain->SetBranchAddress("electron_pass_conversion", electron_pass_conversion, &b_electron_pass_conversion);
    fChain->SetBranchAddress("tau_count", &tau_count, &b_tau_count);
    fChain->SetBranchAddress("tau_e", tau_e, &b_tau_e);
