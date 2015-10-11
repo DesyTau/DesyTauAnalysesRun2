@@ -305,7 +305,7 @@ void NTupleMaker::beginJob(){
     tree->Branch("muon_miniISO", muon_miniISO, "muon_miniISO[muon_count]/F");
     tree->Branch("muon_combQ_chi2LocalPosition", muon_combQ_chi2LocalPosition, "muon_combQ_chi2LocalPosition[muon_count]/F");
     tree->Branch("muon_combQ_trkKink", muon_combQ_trkKink, "muon_combQ_trkKink[muon_count]/F");
-    tree->Branch("muon_validFraction", muon_validFraction, "muon_validFraction[muon_count]/F");
+    tree->Branch("muon_validFraction", muon_validFraction, "muon_validFraction[muon_count]/D");
     tree->Branch("muon_segmentComp", muon_segmentComp, "muon_segmentComp[muon_count]/F");
     
     tree->Branch("muon_nMuonStations", muon_nMuonStations,"muon_nMuonStations[muon_count]/i");
@@ -350,6 +350,7 @@ void NTupleMaker::beginJob(){
   if (crecpfjet) {
     tree->Branch("pfjet_count", &pfjet_count, "pfjet_count/i");
     tree->Branch("pfjet_e", pfjet_e, "pfjet_e[pfjet_count]/F");
+    tree->Branch("pfjet_jecfactor", pfjet_jecfactor, "pfjet_jecfactor[pfjet_count]/F");
     tree->Branch("pfjet_px", pfjet_px, "pfjet_px[pfjet_count]/F");
     tree->Branch("pfjet_py", pfjet_py, "pfjet_py[pfjet_count]/F");
     tree->Branch("pfjet_pz", pfjet_pz, "pfjet_pz[pfjet_count]/F");
@@ -360,6 +361,7 @@ void NTupleMaker::beginJob(){
     tree->Branch("pfjet_chargedhadronicenergy", pfjet_chargedhadronicenergy, "pfjet_chargedhadronicenergy[pfjet_count]/F");
     tree->Branch("pfjet_neutralemenergy", pfjet_neutralemenergy, "pfjet_neutralemenergy[pfjet_count]/F");
     tree->Branch("pfjet_chargedemenergy", pfjet_chargedemenergy, "pfjet_chargedemenergy[pfjet_count]/F");
+    tree->Branch("pfjet_muonenergy", pfjet_muonenergy, "pfjet_muonenergy[pfjet_count]/F");
     tree->Branch("pfjet_chargedmulti", pfjet_chargedmulti, "pfjet_chargedmulti[pfjet_count]/i");	
     tree->Branch("pfjet_neutralmulti", pfjet_neutralmulti, "pfjet_neutralmulti[pfjet_count]/i");	
     tree->Branch("pfjet_chargedhadronmulti", pfjet_chargedhadronmulti, "pfjet_chargedhadronmulti[pfjet_count]/i");
@@ -610,9 +612,9 @@ void NTupleMaker::beginJob(){
     tree->Branch("mvamet_sigxy", mvamet_sigxy, "mvamet_sigxy[mvamet_count]/F");
     tree->Branch("mvamet_sigyx", mvamet_sigyx, "mvamet_sigyx[mvamet_count]/F");
     tree->Branch("mvamet_sigyy", mvamet_sigyy, "mvamet_sigyy[mvamet_count]/F");
-    tree->Branch("mvamet_channel", mvamet_channel, "mvamet_channel[mvamet_count]/b");
-    tree->Branch("mvamet_lep1", mvamet_lep1, "mvamet_lep1[mvamet_count]/i");
-    tree->Branch("mvamet_lep2", mvamet_lep2, "mvamet_lep2[mvamet_count]/i");
+    tree->Branch("mvamet_channel", mvamet_channel, "mvamet_channel[mvamet_count]/i");
+    tree->Branch("mvamet_lep1", mvamet_lep1, "mvamet_lep1[mvamet_count]/I");
+    tree->Branch("mvamet_lep2", mvamet_lep2, "mvamet_lep2[mvamet_count]/I");
   }
 
   // generator info
@@ -1170,10 +1172,10 @@ void NTupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	{
 	  for(unsigned i = 0 ; i < Vertex->size(); i++)
 	    {
-	      //if(true){
-	      if((*Vertex)[i].isValid() && !(*Vertex)[i].isFake()){
-		  //if(true){
-		  if((*Vertex)[i].ndof() >= 4 && (*Vertex)[i].z() > -24 && (*Vertex)[i].z() < 24 && (*Vertex)[i].position().Rho() < 2.){
+	      if(true){
+		//if((*Vertex)[i].isValid() && !(*Vertex)[i].isFake()){
+		  if(true){
+		    //if((*Vertex)[i].ndof() >= 4 && (*Vertex)[i].z() > -24 && (*Vertex)[i].z() < 24 && (*Vertex)[i].position().Rho() < 2.){
 		    if(primvertex_count == 0)
 		      {
 			primvertex_x = (*Vertex)[i].x();
@@ -2518,17 +2520,10 @@ unsigned int NTupleMaker::AddPFJets(const edm::Event& iEvent, const edm::EventSe
   //	assert(svInfos.isValid());
   
   edm::Handle<edm::ValueMap<float> > puJetIdMVAFull;
-  //iEvent.getByLabel(edm::InputTag("puJetIdForPFMVAMEt","fullDiscriminant"), puJetIdMVAFull);
-  iEvent.getByLabel(edm::InputTag("pileupJetIdFull","full53xDiscriminant"), puJetIdMVAFull);
-
-  edm::Handle<reco::PFJetCollection> ak4jets;
-  //iEvent.getByLabel(edm::InputTag("calibratedAK4PFJetsForPFMVAMEt"), ak4jets);
-  //iEvent.getByLabel(edm::InputTag("ak4PFJets"), ak4jets);
-  //iEvent.getByLabel(edm::InputTag("AK4PFCHS"), ak4jets);
-  iEvent.getByLabel(edm::InputTag("slimmedJets"), ak4jets);
+  iEvent.getByLabel(edm::InputTag("puJetId","fullDiscriminant"), puJetIdMVAFull);
   
-  //	edm::Handle<edm::ValueMap<int> > puJetIdFlagFull;
-  //	iEvent.getByLabel(edm::InputTag("pileupJetIdProducer","fullId"), puJetIdFlagFull);
+  edm::Handle<reco::PFJetCollection> ak4jets;
+  iEvent.getByLabel(edm::InputTag("ak4PFJets"), ak4jets);
 
   if(pfjets.isValid())
     {
@@ -2557,10 +2552,12 @@ unsigned int NTupleMaker::AddPFJets(const edm::Event& iEvent, const edm::EventSe
           pfjet_pt[pfjet_count] = (*pfjets)[i].pt();
           pfjet_eta[pfjet_count] = (*pfjets)[i].eta();
           pfjet_phi[pfjet_count] = (*pfjets)[i].phi();
+	  pfjet_jecfactor[pfjet_count] = ((*pfjets)[i].jecSetsAvailable() ? (*pfjets)[i].jecFactor(0) : 1.);
 	  pfjet_neutralhadronicenergy[pfjet_count] = (*pfjets)[i].neutralHadronEnergy();
 	  pfjet_chargedhadronicenergy[pfjet_count] = (*pfjets)[i].chargedHadronEnergy();
 	  pfjet_neutralemenergy[pfjet_count] = (*pfjets)[i].neutralEmEnergy();
 	  pfjet_chargedemenergy[pfjet_count] = (*pfjets)[i].chargedEmEnergy();
+	  pfjet_muonenergy[pfjet_count] = (*pfjets)[i].muonEnergy();	  
 	  pfjet_chargedmulti[pfjet_count] = (*pfjets)[i].chargedMultiplicity();
 	  pfjet_neutralmulti[pfjet_count] = (*pfjets)[i].neutralMultiplicity();
 	  pfjet_chargedhadronmulti[pfjet_count] = (*pfjets)[i].chargedHadronMultiplicity();

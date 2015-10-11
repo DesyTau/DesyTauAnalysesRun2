@@ -518,6 +518,7 @@ class NTupleMaker : public edm::EDAnalyzer{
   Float_t pfjet_chargedhadronicenergy[M_jetmaxcount];
   Float_t pfjet_neutralemenergy[M_jetmaxcount];
   Float_t pfjet_chargedemenergy[M_jetmaxcount];
+  Float_t pfjet_muonenergy[M_jetmaxcount];
   UInt_t pfjet_chargedmulti[M_jetmaxcount];	
   UInt_t pfjet_neutralmulti[M_jetmaxcount];	
   UInt_t pfjet_chargedhadronmulti[M_jetmaxcount];
@@ -793,9 +794,9 @@ class NTupleMaker : public edm::EDAnalyzer{
   Float_t mvamet_sigxy[M_mvametmaxcount];
   Float_t mvamet_sigyx[M_mvametmaxcount];
   Float_t mvamet_sigyy[M_mvametmaxcount];
-  UChar_t mvamet_channel[M_mvametmaxcount];
-  UInt_t mvamet_lep1[M_mvametmaxcount];
-  UInt_t mvamet_lep2[M_mvametmaxcount];
+  UInt_t mvamet_channel[M_mvametmaxcount];
+  Int_t mvamet_lep1[M_mvametmaxcount];
+  Int_t mvamet_lep2[M_mvametmaxcount];
   
   Float_t genmet_ex;
   Float_t genmet_ey;

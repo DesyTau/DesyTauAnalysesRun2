@@ -461,7 +461,7 @@ class NTupleMaker : public edm::EDAnalyzer{
   // needed for medium muon Id
   Float_t muon_combQ_chi2LocalPosition[M_muonmaxcount];
   Float_t muon_combQ_trkKink[M_muonmaxcount];
-  Float_t muon_validFraction[M_muonmaxcount];
+  Double_t muon_validFraction[M_muonmaxcount];
   Float_t muon_segmentComp[M_muonmaxcount];
 
   UInt_t muon_nMuonStations[M_muonmaxcount];
@@ -508,6 +508,7 @@ class NTupleMaker : public edm::EDAnalyzer{
   // pat jets 
   UInt_t pfjet_count;
   Float_t pfjet_e[M_jetmaxcount];
+  Float_t pfjet_jecfactor[M_jetmaxcount];
   Float_t pfjet_px[M_jetmaxcount];
   Float_t pfjet_py[M_jetmaxcount];
   Float_t pfjet_pz[M_jetmaxcount];
@@ -518,6 +519,7 @@ class NTupleMaker : public edm::EDAnalyzer{
   Float_t pfjet_chargedhadronicenergy[M_jetmaxcount];
   Float_t pfjet_neutralemenergy[M_jetmaxcount];
   Float_t pfjet_chargedemenergy[M_jetmaxcount];
+  Float_t pfjet_muonenergy[M_jetmaxcount];
   UInt_t pfjet_chargedmulti[M_jetmaxcount];	
   UInt_t pfjet_neutralmulti[M_jetmaxcount];	
   UInt_t pfjet_chargedhadronmulti[M_jetmaxcount];
@@ -793,9 +795,9 @@ class NTupleMaker : public edm::EDAnalyzer{
   Float_t mvamet_sigxy[M_mvametmaxcount];
   Float_t mvamet_sigyx[M_mvametmaxcount];
   Float_t mvamet_sigyy[M_mvametmaxcount];
-  UChar_t mvamet_channel[M_mvametmaxcount];
-  UInt_t mvamet_lep1[M_mvametmaxcount];
-  UInt_t mvamet_lep2[M_mvametmaxcount];
+  UInt_t mvamet_channel[M_mvametmaxcount];
+  Int_t mvamet_lep1[M_mvametmaxcount];
+  Int_t mvamet_lep2[M_mvametmaxcount];
   
   Float_t genmet_ex;
   Float_t genmet_ey;

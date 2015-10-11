@@ -61,7 +61,7 @@ public :
    Float_t         muon_miniISO[100];   //[muon_count]
    Float_t         muon_combQ_chi2LocalPosition[100];   //[muon_count]
    Float_t         muon_combQ_trkKink[100];   //[muon_count]
-   Float_t         muon_validFraction[100];   //[muon_count]
+   Double_t        muon_validFraction[100];   //[muon_count]
    Float_t         muon_segmentComp[100];   //[muon_count]
    UInt_t          muon_nMuonStations[100];   //[muon_count]
    UInt_t          muon_nMuonHits[100];   //[muon_count]
@@ -103,10 +103,12 @@ public :
    Float_t         pfjet_pt[1000];   //[pfjet_count]
    Float_t         pfjet_eta[1000];   //[pfjet_count]
    Float_t         pfjet_phi[1000];   //[pfjet_count]
+   Float_t         pfjet_jecfactor[1000];   //[pfjet_count] 
    Float_t         pfjet_neutralhadronicenergy[1000];   //[pfjet_count]
    Float_t         pfjet_chargedhadronicenergy[1000];   //[pfjet_count]
    Float_t         pfjet_neutralemenergy[1000];   //[pfjet_count]
    Float_t         pfjet_chargedemenergy[1000];   //[pfjet_count]
+   Float_t         pfjet_muonenergy[1000];   //[pfjet_count]  
    UInt_t          pfjet_chargedmulti[1000];   //[pfjet_count]
    UInt_t          pfjet_neutralmulti[1000];   //[pfjet_count]
    UInt_t          pfjet_chargedhadronmulti[1000];   //[pfjet_count]
@@ -268,13 +270,15 @@ public :
    Float_t         genmet_ex;
    Float_t         genmet_ey;
    UInt_t          mvamet_count;
-   Float_t         mvamet_ex[4];   //[mvamet_count]
-   Float_t         mvamet_ey[4];   //[mvamet_count]
-   Float_t         mvamet_sigxx[4];   //[mvamet_count]
-   Float_t         mvamet_sigxy[4];   //[mvamet_count]
-   Float_t         mvamet_sigyx[4];   //[mvamet_count]
-   Float_t         mvamet_sigyy[4];   //[mvamet_count]
-   UChar_t         mvamet_channel[4];   //[mvamet_count]
+   Float_t         mvamet_ex[200];   //[mvamet_count]
+   Float_t         mvamet_ey[200];   //[mvamet_count]
+   Float_t         mvamet_sigxx[200];   //[mvamet_count]
+   Float_t         mvamet_sigxy[200];   //[mvamet_count]
+   Float_t         mvamet_sigyx[200];   //[mvamet_count]
+   Float_t         mvamet_sigyy[200];   //[mvamet_count]
+   UInt_t          mvamet_channel[200];   //[mvamet_count]
+   Int_t           mvamet_lep1[200];   //[mvamet_count]
+   Int_t           mvamet_lep2[200];   //[mvamet_count]
    Float_t         genweight;
    Float_t         genid1;
    Float_t         genx1;
@@ -423,10 +427,12 @@ public :
    TBranch        *b_pfjet_pt;   //!
    TBranch        *b_pfjet_eta;   //!
    TBranch        *b_pfjet_phi;   //!
+   TBranch        *b_pfjet_jecfactor;   //!   
    TBranch        *b_pfjet_neutralhadronicenergy;   //!
    TBranch        *b_pfjet_chargedhadronicenergy;   //!
    TBranch        *b_pfjet_neutralemenergy;   //!
    TBranch        *b_pfjet_chargedemenergy;   //!
+   TBranch        *b_pfjet_muonenergy;   //!  
    TBranch        *b_pfjet_chargedmulti;   //!
    TBranch        *b_pfjet_neutralmulti;   //!
    TBranch        *b_pfjet_chargedhadronmulti;   //!
@@ -595,6 +601,8 @@ public :
    TBranch        *b_mvamet_sigyx;   //!
    TBranch        *b_mvamet_sigyy;   //!
    TBranch        *b_mvamet_channel;   //!
+   TBranch        *b_mvamet_lep1;   //!
+   TBranch        *b_mvamet_lep2;   //!
    TBranch        *b_genweight;   //!
    TBranch        *b_genid1;   //!
    TBranch        *b_genx1;   //!
@@ -890,10 +898,12 @@ void AC1B::Init(TTree *tree, bool isData)
    fChain->SetBranchAddress("pfjet_pt", &pfjet_pt, &b_pfjet_pt);
    fChain->SetBranchAddress("pfjet_eta", &pfjet_eta, &b_pfjet_eta);
    fChain->SetBranchAddress("pfjet_phi", &pfjet_phi, &b_pfjet_phi);
+   fChain->SetBranchAddress("pfjet_jecfactor", &pfjet_jecfactor, &b_pfjet_jecfactor);    
    fChain->SetBranchAddress("pfjet_neutralhadronicenergy", &pfjet_neutralhadronicenergy, &b_pfjet_neutralhadronicenergy);
    fChain->SetBranchAddress("pfjet_chargedhadronicenergy", &pfjet_chargedhadronicenergy, &b_pfjet_chargedhadronicenergy);
    fChain->SetBranchAddress("pfjet_neutralemenergy", &pfjet_neutralemenergy, &b_pfjet_neutralemenergy);
    fChain->SetBranchAddress("pfjet_chargedemenergy", &pfjet_chargedemenergy, &b_pfjet_chargedemenergy);
+   fChain->SetBranchAddress("pfjet_muonenergy", &pfjet_muonenergy, &b_pfjet_muonenergy); 
    fChain->SetBranchAddress("pfjet_chargedmulti", &pfjet_chargedmulti, &b_pfjet_chargedmulti);
    fChain->SetBranchAddress("pfjet_neutralmulti", &pfjet_neutralmulti, &b_pfjet_neutralmulti);
    fChain->SetBranchAddress("pfjet_chargedhadronmulti", &pfjet_chargedhadronmulti, &b_pfjet_chargedhadronmulti);
@@ -1062,6 +1072,8 @@ void AC1B::Init(TTree *tree, bool isData)
    fChain->SetBranchAddress("mvamet_sigyx", mvamet_sigyx, &b_mvamet_sigyx);
    fChain->SetBranchAddress("mvamet_sigyy", mvamet_sigyy, &b_mvamet_sigyy);
    fChain->SetBranchAddress("mvamet_channel", mvamet_channel, &b_mvamet_channel);
+   fChain->SetBranchAddress("mvamet_lep1", mvamet_lep1, &b_mvamet_lep1);
+   fChain->SetBranchAddress("mvamet_lep2", mvamet_lep2, &b_mvamet_lep2);   
    fChain->SetBranchAddress("trigobject_count", &trigobject_count, &b_trigobject_count);
    fChain->SetBranchAddress("trigobject_px", trigobject_px, &b_trigobject_px);
    fChain->SetBranchAddress("trigobject_py", trigobject_py, &b_trigobject_py);

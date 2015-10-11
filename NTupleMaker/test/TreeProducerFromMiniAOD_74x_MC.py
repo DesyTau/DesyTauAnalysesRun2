@@ -62,6 +62,8 @@ else:
     process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v2'
   else:
     process.GlobalTag.globaltag = '74X_mcRun2_startup_v2'
+
+print "GT=",process.GlobalTag.globaltag
     
 if usePrivateSQlite:
     from CondCore.DBCommon.CondDBSetup_cfi import *
@@ -221,6 +223,8 @@ else:
   else:
     fname='/store/mc/RunIISpring15DR74/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v2/60000/001C7571-0511-E511-9B8E-549F35AE4FAF.root'
 
+fname='/store/mc/RunIISpring15DR74/SUSYGluGluToHToTauTau_M-160_TuneCUETP8M1_13TeV-pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/10000/2A3929AE-5303-E511-9EFE-0025905A48C0.root'
+
 # Define the input source
 process.source = cms.Source("PoolSource", 
     fileNames = cms.untracked.vstring([ fname ])
@@ -336,10 +340,10 @@ mvaMETTauMu.srcLeptons = cms.VInputTag(cms.InputTag("tauPreSelectionTauMu", "", 
                                                cms.InputTag("muonPreSelectionTauMu", "", ""))
 mvaMETTauMu.permuteLeptons = cms.bool(True)
 
-mvaMETTauMu.inputFileNames = cms.PSet(U     = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru_7_4_X_miniAOD_50NS_July2015.root'),
-                                      DPhi  = cms.FileInPath('RecoMET/METPUSubtraction/data/gbrphi_7_4_X_miniAOD_50NS_July2015.root'),
-                                      CovU1 = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru1cov_7_4_X_miniAOD_50NS_July2015.root'),
-                                      CovU2 = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru2cov_7_4_X_miniAOD_50NS_July2015.root')
+mvaMETTauMu.inputFileNames = cms.PSet(U     = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru_7_4_X_miniAOD_25NS_July2015.root'),
+                                      DPhi  = cms.FileInPath('RecoMET/METPUSubtraction/data/gbrphi_7_4_X_miniAOD_25NS_July2015.root'),
+                                      CovU1 = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru1cov_7_4_X_miniAOD_25NS_July2015.root'),
+                                      CovU2 = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru2cov_7_4_X_miniAOD_25NS_July2015.root')
                                       )
 
 process.mvaMETTauMu = mvaMETTauMu
@@ -457,6 +461,10 @@ process.puJetIdForPFMVAMEt = cms.EDProducer("PileupJetIdProducer",
     runMvas = cms.bool(True)
 )
 
+process.puJetId = process.puJetIdForPFMVAMEt.clone(
+  jets = cms.InputTag("ak4PFJets")
+)
+
 process.mvaMetSequence  = cms.Sequence(process.leptonPreSelectionSequence +
                                        process.ak4PFJets + process.calibratedAK4PFJetsForPFMVAMEt + process.puJetIdForPFMVAMEt +
                                        process.mvaMETDiTau + process.mvaMETTauMu + process.mvaMETTauEle + process.mvaMETMuEle)
@@ -481,7 +489,7 @@ Period = cms.untracked.string("Spring15"),
 Skim = cms.untracked.uint32(0),
 # switches of collections
 GenParticles = cms.untracked.bool(True),
-Trigger = cms.untracked.bool(False),
+Trigger = cms.untracked.bool(True),
 RecPrimVertex = cms.untracked.bool(True),
 RecBeamSpot = cms.untracked.bool(True),
 RecTrack = cms.untracked.bool(False),
@@ -501,7 +509,8 @@ eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V
 mvaValuesMap     = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"),
 mvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories"),
 TauCollectionTag = cms.InputTag("slimmedTaus"),
-JetCollectionTag = cms.InputTag("patJetsReapplyJEC::TreeProducer"),
+#JetCollectionTag = cms.InputTag("patJetsReapplyJEC::TreeProducer"),
+JetCollectionTag = cms.InputTag("slimmedJets"),
 MetCollectionTag = cms.InputTag("slimmedMETs::PAT"),
 MetCorrCollectionTag = cms.InputTag("slimmedMETs::TreeProducer"),
 MvaMetCollectionsTag = cms.VInputTag("mvaMETDiTau", "mvaMETTauMu", "mvaMETTauEle", "mvaMETMuEle"),
@@ -517,8 +526,8 @@ HLTriggerPaths = cms.untracked.vstring(
 'HLT_IsoMu24_eta2p1_v',
 'HLT_IsoMu27_v',
 'HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v',
-#'HLT_Ele22_eta2p1_WP75_Gsf_LooseIsoPFTau20_v',
-'HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_v',
+'HLT_Ele22_eta2p1_WP75_Gsf_LooseIsoPFTau20_v',
+#'HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_v',
 'HLT_Ele23_WPLoose_Gsf_v',
 'HLT_Ele22_eta2p1_WP75_Gsf_v',
 'HLT_Ele27_eta2p1_WP75_Gsf_v',
@@ -526,8 +535,26 @@ HLTriggerPaths = cms.untracked.vstring(
 'HLT_Ele22_eta2p1_WPLoose_Gsf_v',
 'HLT_Ele27_eta2p1_WPLoose_Gsf_v',
 'HLT_Ele32_eta2p1_WPLoose_Gsf_v',
-'HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v'
+'HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v',
+'HLT_Ele32_eta2p1_WPTight_Gsf_v'
 ),
+#HLTriggerPaths = cms.untracked.vstring(
+#'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v',
+#'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v',
+#'HLT_IsoMu24_eta2p1_v',
+#'HLT_IsoMu27_v',
+#'HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v',
+##'HLT_Ele22_eta2p1_WP75_Gsf_LooseIsoPFTau20_v',
+#'HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_v',
+#'HLT_Ele23_WPLoose_Gsf_v',
+#'HLT_Ele22_eta2p1_WP75_Gsf_v',
+#'HLT_Ele27_eta2p1_WP75_Gsf_v',
+#'HLT_Ele32_eta2p1_WP75_Gsf_v',
+#'HLT_Ele22_eta2p1_WPLoose_Gsf_v',
+#'HLT_Ele27_eta2p1_WPLoose_Gsf_v',
+#'HLT_Ele32_eta2p1_WPLoose_Gsf_v',
+#'HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v'
+#),
 TriggerProcess = cms.untracked.string("HLT"),
 # tracks
 RecTrackPtMin = cms.untracked.double(0.5),
@@ -556,8 +583,8 @@ RecElectronEtaMax = cms.untracked.double(2.5),
 RecElectronHLTriggerMatching = cms.untracked.vstring(
 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v.*:hltMu23TrkIsoVVLEle12CaloIdLTrackIdLIsoVLElectronlegTrackIsoFilter', 
 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v.*:hltMu8TrkIsoVVLEle23CaloIdLTrackIdLIsoVLElectronlegTrackIsoFilter', 
-#'HLT_Ele22_eta2p1_WP75_Gsf_LooseIsoPFTau20_v.*:hltSingleEle22WP75GsfTrackIsoFilter',
-#'HLT_Ele22_eta2p1_WP75_Gsf_LooseIsoPFTau20_v.*:hltOverlapFilterIsoEle22WP75GsfLooseIsoPFTau20',
+'HLT_Ele22_eta2p1_WP75_Gsf_LooseIsoPFTau20_v.*:hltEle22WP75L1IsoEG20erTau20erGsfTrackIsoFilter',
+'HLT_Ele22_eta2p1_WP75_Gsf_LooseIsoPFTau20_v.*:hltOverlapFilterIsoEle22WP75GsfLooseIsoPFTau20',
 'HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_v.*:hltSingleEle22WPLooseGsfTrackIsoFilter',
 'HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_v.*:hltOverlapFilterIsoEle22WPLooseGsfLooseIsoPFTau20',
 'HLT_Ele22_eta2p1_WP75_Gsf_v.*:hltSingleEle22WP75GsfTrackIsoFilter',
@@ -566,15 +593,16 @@ RecElectronHLTriggerMatching = cms.untracked.vstring(
 'HLT_Ele23_WPLoose_Gsf_v.*:hltEle23WPLooseGsfTrackIsoFilter',
 'HLT_Ele22_eta2p1_WPLoose_Gsf_v.*:hltEle22WPLooseGsfTrackIsoFilter',
 'HLT_Ele27_eta2p1_WPLoose_Gsf_v.*:hltEle27WPLooseGsfTrackIsoFilter',
-'HLT_Ele32_eta2p1_WPLoose_Gsf_v.*:hltEle32WPLooseGsfTrackIsoFilter'
+'HLT_Ele32_eta2p1_WPLoose_Gsf_v.*:hltEle32WPLooseGsfTrackIsoFilter',
+'HLT_Ele32_eta2p1_WPTight_Gsf_v.*:hltEle32WP75GsfTrackIsoFilter'
 ),
 RecElectronNum = cms.untracked.int32(0),
 # taus
 RecTauPtMin = cms.untracked.double(18),
 RecTauEtaMax = cms.untracked.double(2.5),                                      
 RecTauHLTriggerMatching = cms.untracked.vstring(
-#'HLT_Ele22_eta2p1_WP75_Gsf_LooseIsoPFTau20_v.*:hltPFTau20TrackLooseIso',
-#'HLT_Ele22_eta2p1_WP75_Gsf_LooseIsoPFTau20_v.*:hltOverlapFilterIsoEle22WP75GsfLooseIsoPFTau20', 
+'HLT_Ele22_eta2p1_WP75_Gsf_LooseIsoPFTau20_v.*:hltPFTau20TrackLooseIso',
+'HLT_Ele22_eta2p1_WP75_Gsf_LooseIsoPFTau20_v.*:hltOverlapFilterIsoEle22WP75GsfLooseIsoPFTau20', 
 'HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_v.*:hltPFTau20TrackLooseIso',
 'HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_v.*:hltOverlapFilterIsoEle22WPLooseGsfLooseIsoPFTau20',
 'HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v.*:hltPFTau20TrackLooseIsoAgainstMuon',
@@ -646,7 +674,7 @@ RecTauBinaryDiscriminators = cms.untracked.vstring(),
 RecTauNum = cms.untracked.int32(0),
 # jets
 RecJetPtMin = cms.untracked.double(18.),
-JetEtaMax = cms.untracked.double(5.2),
+RecJetEtaMax = cms.untracked.double(5.2),
 RecJetHLTriggerMatching = cms.untracked.vstring(),
 RecJetBtagDiscriminators = cms.untracked.vstring(
 'jetBProbabilityBJetTags',
@@ -692,12 +720,13 @@ process.p = cms.Path(
 )
 """
 process.p = cms.Path(
-  process.initroottree*
+  #process.initroottree* 
   process.mvaMetSequence *
   process.egmGsfElectronIDSequence * 
   process.patJetCorrFactorsReapplyJEC * process.patJetsReapplyJEC *
-  process.HBHENoiseFilterResultProducer* #produces HBHE bools
-  process.ApplyBaselineHBHENoiseFilter*  #reject events based 
+  #process.HBHENoiseFilterResultProducer* #produces HBHE bools
+  #process.ApplyBaselineHBHENoiseFilter*  #reject events based 
+  process.puJetId *  
   process.makeroottree
 )
 

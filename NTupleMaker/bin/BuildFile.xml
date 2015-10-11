@@ -64,6 +64,7 @@
  <use name="boost" />
  <use name="boost_program_options"/>
  <use name="DesyTauAnalyses/NTupleMaker"/>
+ <use name="TauAnalysis/SVfitStandalone"/>
 </bin>
 
 <bin name="SUSYmuel" file="AnalysisMacroSUSYmuel.cpp">
@@ -133,6 +134,7 @@
  <use name="boost" />
  <use name="boost_program_options"/>
  <use name="DesyTauAnalyses/NTupleMaker"/>
+ <use name="TauAnalysis/SVfitStandalone"/>
 </bin>
 
 <bin name="CompareSpring15" file="CompareSpring15.cpp">
