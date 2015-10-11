@@ -724,8 +724,8 @@ process.p = cms.Path(
   process.mvaMetSequence *
   process.egmGsfElectronIDSequence * 
   process.patJetCorrFactorsReapplyJEC * process.patJetsReapplyJEC *
-  #process.HBHENoiseFilterResultProducer* #produces HBHE bools
-  #process.ApplyBaselineHBHENoiseFilter*  #reject events based 
+  process.HBHENoiseFilterResultProducer* #produces HBHE bools
+  process.ApplyBaselineHBHENoiseFilter*  #reject events based 
   process.puJetId *  
   process.makeroottree
 )
